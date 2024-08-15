@@ -11,14 +11,14 @@ def read_root():
     return {"message": "Bienvenido a la API de películas. Usa /meses/{mes} para obtener datos de filmaciones."}
 
 
-## Se ingresa un mes en idioma Español. Debe devolver la cantidad de películas que fueron estrenadas en el mes consultado en la totalidad del dataset.
+# Recibe un mes escrito en español, y devuelve la cantidad de películas estrenadas durante ese mes, que se encuentren en todo el dataset
 @app.get("/meses/{mes}", tags=['Buscar cantidad por mes'])
 def cantidad_filmaciones_mes(mes: str): 
     """Esta función retorna las películas estrenadas en un mes determinado.
     Espera un argumento: el 'mes' de estreno, ingresado en español.
     Retorna la cantidad de filmaciones estrenadas durante ese mes, cualquier año, dentro de todo el dataset.
     """
-    #Mapeo de meses en español a numeros para utulizar funcion day of the week de pandas
+    #Creo un diccionario de meses y sus números respectivos, que utilizaré en las funciones
     meses = {
     'enero': 1,
     'febrero': 2,
@@ -33,24 +33,23 @@ def cantidad_filmaciones_mes(mes: str):
     'noviembre': 11,
     'diciembre': 12
 }
-    # Formatear la columna de release_date a formato datatime. 
     movies_credits['release_date']= pd.to_datetime(movies_credits['release_date'],format= '%Y-%m-%d')
-    # Convertir el nombre del mes a minúsculas para asegurar coincidencia
-    mes = mes.lower()
+    # Confirmo que la fecha se encuentre en formato datatime, para extraer el mes. 
+
+    mes = mes.lower()     # La importancia de convertirlo a minúsculas es para que la búsqueda no arroje errores y haya coincidencia.
     
-    # Verificar si el mes ingresado es válido, de lo contrario arroja error.
     if mes not in meses:
         raise HTTPException(status_code=400, detail=f"Mes ingresado '{mes}' no es válido. Por favor ingrese un mes en Español.")
+    # Se establece el error en caso de no indicarse un mes correctamente y en español.
     
-    # Obtener el número del mes
-    mes_numero = meses[mes]
+    numero_mes = meses[mes] # Obtengo el número del mes
     
     # Contar las películas estrenadas en el mes especificado, que hayan sido estrenadas
     lista_filmaciones = movies_credits[
-        (movies_credits['release_date'].dt.month == mes_numero) 
-        & (movies_credits['status'] == 'Released')
+        (movies_credits['release_date'].dt.month == numero_mes) #Busco los valores del número del mes
+        & (movies_credits['status'] == 'Released') #La segunda condición es que el estado sea 'Released'
     ]
     
-    cantidad_filmaciones = len(lista_filmaciones)
+    cantidad_filmaciones = len(lista_filmaciones) #Guardo en una variable la cantidad de elementos 
     
     return {"mes": mes, "cantidad de peliculas": cantidad_filmaciones} 
