@@ -2,17 +2,17 @@ from fastapi import FastAPI, HTTPException
 import pandas as pd
 
 app = FastAPI()
-
+app.title = "Buscador de películas"
 movies_credits = pd.read_csv('DATA/movies_credits.csv') #Se crea un DataFrame para las diferentes consultas.
 
 
-@app.get("/")
+@app.get("/", tags=['Home'])
 def read_root():
     return {"message": "Bienvenido a la API de películas. Usa /meses/{mes} para obtener datos de filmaciones."}
 
 
 ## Se ingresa un mes en idioma Español. Debe devolver la cantidad de películas que fueron estrenadas en el mes consultado en la totalidad del dataset.
-@app.get("/meses/{mes}")
+@app.get("/meses/{mes}", tags=['Buscar cantidad por mes'])
 def cantidad_filmaciones_mes(mes: str): 
     """Esta función retorna las películas estrenadas en un mes determinado.
     Espera un argumento: el 'mes' de estreno, ingresado en español.
