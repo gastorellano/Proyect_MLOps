@@ -8,7 +8,7 @@ movies_credits = pd.read_csv('DATA/movies_credits.csv') #Se crea un DataFrame pa
 
 @app.get("/", tags=['Home'])
 def read_root():
-    return {"message": "Bienvenido a la API de películas. Usa /meses/{mes} para obtener datos de filmaciones."}
+    return {"message": "Bienvenido a la API de películas. Aquí podrás obtener datos de filmaciones."}
 
 
 # Recibe un mes escrito en español, y devuelve la cantidad de películas estrenadas durante ese mes, que se encuentren en todo el dataset
