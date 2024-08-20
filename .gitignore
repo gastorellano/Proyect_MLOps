@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 .env
 Lib/venv/
+DATA/movies_transformado.csv
+DATA/credits_transformado.csv
