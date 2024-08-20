@@ -9,7 +9,7 @@ from typing import List
 
 app = FastAPI()
 app.title = "Buscador de películas"
-movies_credits = pd.read_csv('DATA/movies_credits.csv') #Se crea un DataFrame para las diferentes consultas.
+movies_credits = pd.read_parquet('DATA/movies_credits.parquet') #Se crea un DataFrame para las diferentes consultas.
 recomendacion_df = pd.read_parquet('DATA/recomendacion.parquet')
 
 vectorizacion = TfidfVectorizer(stop_words=None)#Se coloca None porque ha sido previamente depurado
@@ -203,9 +203,9 @@ def get_director(director: str):
     movies_detalles = []
     for index, row in director_movies.iterrows():
         movie_details = {
-            'title': row['title'],
-            'return': row['return'],
-            'cost': row['budget'],
+            'titulo': row['title'],
+            'retorno': row['return'],
+            'costo': row['budget'],
             'ganancia': row['revenue'] - row['budget']
         }
         movies_detalles.append(movie_details)
@@ -233,6 +233,7 @@ def recomendacionPeliculas(title, df=recomendacion_df, similitud_coseno=similitu
         return peliculas_similares
     except IndexError:
         print(f"No se encontró la película '{title}'. Por favor, intente con otro título.")
+    
 
 @app.get("/recomendacion/{titulo}", response_model=List[str])
 def recomendacion(titulo: str):
