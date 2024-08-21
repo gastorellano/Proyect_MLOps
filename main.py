@@ -70,7 +70,7 @@ def cantidad_filmaciones_mes(mes: str):
 
 # En el segundo endpoint se ingresa un día en idioma Español. Devuelve la cantidad de películas que fueron estrenadas en día consultado en la totalidad del dataset.
 
-@app.get("/dias/{dia}")
+@app.get("/dias/{dia}", tags=['Buscar cantidad por día de la semana'])
 def cantidad_filmaciones_dia(dia: str):
     """
     Devuelve la cantidad de películas estrenadas en un día específico, con estado 'released'.
@@ -109,7 +109,7 @@ def cantidad_filmaciones_dia(dia: str):
 
 
 #En el tercer endopoint, se ingresa el título de una filmación esperando como respuesta el título, el año de estreno y el score.
-@app.get("/titulo/{titulo}")
+@app.get("/titulo/{titulo}", tags=['Visualizar año de estreno y score'])
 def score_titulo(titulo: str):
     """
     Esta función espera el título de una película, y devuelve el título, el año de estreno y el score de una película específica en un str.
@@ -130,7 +130,7 @@ def score_titulo(titulo: str):
 # y el valor promedio de las votaciones. La misma variable deberá de contar con al menos 2000 valoraciones, caso contrario, debemos contar
 # con un mensaje avisando que no cumple esta condición y que por ende, no se devuelve ningun valor.
 
-@app.get("/votos/{titulo}")
+@app.get("/votos/{titulo}", tags=['Visualizar cantidad de votaciones y valor promedio'])
 def votos_titulo(titulo: str):
     """Se espera un parámetro: el título del film. Retorna el título, año de estreno, la cantidad de valoraciones y el valor promedio
     de los votos.
@@ -152,7 +152,7 @@ def votos_titulo(titulo: str):
 #En este endpoint se debe ingresar el nombre de un actor que se encuentre dentro de un dataset, y devuelve
 # el éxito del mismo medido a través del retorno. Además, la cantidad de películas que en las que ha 
 # participado y el promedio de retorno. La definición no deberá considerar directores.
-@app.get("/nombre_actor/{nombre_actor}") 
+@app.get("/nombre_actor/{nombre_actor}", tags=['Éxito del actor']) 
 def get_actor(nombre_actor: str):
     """
     Se espera un parámetro: el nombre del actor (str). Devuelve el retorno del actor, cantidad de películas 
@@ -186,7 +186,7 @@ def get_actor(nombre_actor: str):
 # mismo medido a través del retorno. Además, deberá devolver el nombre de cada película con la fecha de 
 # lanzamiento, retorno individual, costo y ganancia de la misma.
 
-@app.get("/nombre_director/{nombre_director}")
+@app.get("/nombre_director/{nombre_director}", tags=['Éxito del Director'])
 def get_director(director: str):
     """
     Esta función recibe el nombre del Director (str), y devuelve las películas con fecha de estreno,
@@ -235,11 +235,11 @@ def recomendacionPeliculas(title, df=recomendacion_df, similitud_coseno=similitu
         print(f"No se encontró la película '{title}'. Por favor, intente con otro título.")
     
 
-@app.get("/recomendacion/{titulo}", response_model=List[str])
+@app.get("/recomendacion/{titulo}", response_model=List[str], tags=['Recomendación de Películas'])
 def recomendacion(titulo: str):
     """
     Devuelve un listado de cinco películas similares, orientadas según el titulo, genero y descripcion
-    dentro de las 6000 películas más populares.
+    dentro de las 4000 películas más populares.
 
     Recibe un único Parámetro:
     El título de la película a la que se desea obtener recomendaciones (str)."""
